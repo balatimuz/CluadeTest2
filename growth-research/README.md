@@ -7,6 +7,7 @@ Triggered by this ad: `be10x.com/ai-tools-fb4b/?utm_source=Whatsapp_Status&...` 
 
 | File | What it is |
 |---|---|
+| [`00-marketing-for-developers.md`](00-marketing-for-developers.md) | **Start here if you've never run an ad.** Every term explained with developer analogies, the ₹9 funnel written as pseudo-code, what your existing bots (WhatsApp, Odoo, voice) are worth to whom, and a six-step plan with zero jargon. |
 | [`01-rs9-funnel-teardown.md`](01-rs9-funnel-teardown.md) | How the ₹9 workshop funnel works end-to-end: ad → landing → OTO → workshop → ₹35k–₹1L pitch. Unit economics, psychology, the UTM decode of the actual ad you saw, and the legal/reputation risks. |
 | [`02-what-should-i-build.md`](02-what-should-i-build.md) | Option-by-option scoring of what to sell (copy the funnel vs. WhatsApp AI SaaS vs. productized service vs. low-ticket digital product), a recommendation, ad unit economics for it, and a 90-day plan with a ₹30–50k test budget. |
 | [`funnel-calculator.html`](funnel-calculator.html) | Interactive calculator — plug in your CPL, show-up %, close %, ticket price and see whether a funnel is profitable. Works for both the workshop model and the SaaS model. Open in a browser, no build step. |
