@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Funnel Calculator</title>
+<style>
+  :root {
+    --bg: #f2f3f7;
+    --card: #ffffff;
+    --text: #1c1c1e;
+    --muted: #6b6b72;
+    --border: #e2e3e8;
+    --accent: #ff9f0a;
+    --good: #1f9d55;
+    --bad: #d94343;
+    --input-bg: #f7f7fa;
+    --shadow: rgba(0, 0, 0, 0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #101014;
+      --card: #1c1c22;
+      --text: #ffffff;
+      --muted: #9a9aa3;
+      --border: #2c2c33;
+      --input-bg: #26262d;
+      --shadow: rgba(0, 0, 0, 0.5);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 24px 16px 48px;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin-bottom: 4px; }
+  .sub { color: var(--muted); margin-bottom: 20px; font-size: 0.95rem; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab {
+    padding: 10px 18px; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--card); color: var(--text); cursor: pointer; font-size: 0.95rem;
+  }
+  .tab.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card); border-radius: 20px; padding: 20px;
+    box-shadow: 0 8px 30px var(--shadow);
+  }
+  .card h2 { font-size: 1.05rem; margin-bottom: 14px; }
+  .field { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .field:last-child { border-bottom: none; }
+  .field label { font-size: 0.9rem; flex: 1; }
+  .field small { display: block; color: var(--muted); font-size: 0.75rem; margin-top: 2px; }
+  .field input {
+    width: 120px; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--input-bg); color: var(--text); font-size: 0.95rem; text-align: right;
+  }
+  .row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px dashed var(--border); font-size: 0.92rem; }
+  .row:last-child { border-bottom: none; }
+  .row .v { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .big { font-size: 1.9rem; font-weight: 700; margin: 6px 0 2px; }
+  .good { color: var(--good); }
+  .bad { color: var(--bad); }
+  .note { color: var(--muted); font-size: 0.8rem; margin-top: 12px; line-height: 1.4; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Funnel Calculator</h1>
+  <p class="sub">Plug in your own numbers. Defaults are 2026 Indian benchmarks from <code>01-rs9-funnel-teardown.md</code> and <code>02-what-should-i-build.md</code>.</p>
+
+  <div class="tabs">
+    <button class="tab active" data-mode="workshop">₹9 Workshop → High-ticket</button>
+    <button class="tab" data-mode="saas">Click-to-WhatsApp → SaaS</button>
+  </div>
+
+  <!-- ============ WORKSHOP MODE ============ -->
+  <div id="workshop" class="grid">
+    <div class="card">
+      <h2>Inputs</h2>
+      <div class="field"><label>Ad spend (₹)<small>Total for the period</small></label><input type="number" id="w_spend" value="2500000"></div>
+      <div class="field"><label>Cost per ₹9 registration (₹)<small>Edtech CPL India: ₹150–400; many report ₹500–1000 now</small></label><input type="number" id="w_cpl" value="250"></div>
+      <div class="field"><label>Entry price (₹)</label><input type="number" id="w_entry" value="9"></div>
+      <div class="field"><label>OTO take rate (%)<small>Order bump right after payment: 10–25%</small></label><input type="number" id="w_oto_rate" value="15"></div>
+      <div class="field"><label>OTO price (₹)</label><input type="number" id="w_oto_price" value="499"></div>
+      <div class="field"><label>Show-up rate (%)<small>Paid webinar: 40–55%. Free: 20–30%</small></label><input type="number" id="w_show" value="45"></div>
+      <div class="field"><label>Attendee → buyer (%)<small>High-ticket close: 2–5%</small></label><input type="number" id="w_close" value="3"></div>
+      <div class="field"><label>High-ticket price (₹)<small>Be10x reports: ~₹40k typical, up to ~₹1L</small></label><input type="number" id="w_ticket" value="40000"></div>
+      <div class="field"><label>Refunds (%)</label><input type="number" id="w_refund" value="10"></div>
+      <div class="field"><label>Sales commission + gateway + EMI cost (%)<small>Of high-ticket revenue. Typ. 15–25%</small></label><input type="number" id="w_costs" value="20"></div>
+    </div>
+    <div class="card">
+      <h2>Results</h2>
+      <div class="row"><span>Registrations</span><span class="v" id="w_regs"></span></div>
+      <div class="row"><span>Entry-fee revenue</span><span class="v" id="w_entry_rev"></span></div>
+      <div class="row"><span>OTO revenue</span><span class="v" id="w_oto_rev"></span></div>
+      <div class="row"><span>Attendees</span><span class="v" id="w_att"></span></div>
+      <div class="row"><span>High-ticket buyers</span><span class="v" id="w_buyers"></span></div>
+      <div class="row"><span>High-ticket revenue (after refunds)</span><span class="v" id="w_ht_rev"></span></div>
+      <div class="row"><span>Gross revenue</span><span class="v" id="w_gross"></span></div>
+      <div class="row"><span>Selling costs</span><span class="v" id="w_sell"></span></div>
+      <div class="row"><span>ROAS (gross / ad spend)</span><span class="v" id="w_roas"></span></div>
+      <div class="big" id="w_profit"></div>
+      <div class="note" id="w_note"></div>
+      <div class="note">Each +1 pt of close rate is worth <b id="w_sens"></b>. That is why the last 90 minutes are a hard pitch.</div>
+    </div>
+  </div>
+
+  <!-- ============ SAAS MODE ============ -->
+  <div id="saas" class="grid hidden">
+    <div class="card">
+      <h2>Inputs</h2>
+      <div class="field"><label>Ad spend (₹)<small>Per month</small></label><input type="number" id="s_spend" value="30000"></div>
+      <div class="field"><label>Cost per WhatsApp conversation (₹)<small>India 2026: ₹15–60</small></label><input type="number" id="s_cpc" value="40"></div>
+      <div class="field"><label>Conversation → qualified (%)<small>Replies with business name: 15–30%</small></label><input type="number" id="s_qual" value="20"></div>
+      <div class="field"><label>Qualified → paid pilot (%)<small>20–40%</small></label><input type="number" id="s_pilot" value="25"></div>
+      <div class="field"><label>Pilot price (₹)<small>Your "₹9". Recommended ₹499</small></label><input type="number" id="s_pilot_price" value="499"></div>
+      <div class="field"><label>OTO take rate (%)</label><input type="number" id="s_oto_rate" value="15"></div>
+      <div class="field"><label>OTO price (₹)</label><input type="number" id="s_oto_price" value="999"></div>
+      <div class="field"><label>Pilot → paying (%)<small>40–60% once they see it on real customers</small></label><input type="number" id="s_pay" value="50"></div>
+      <div class="field"><label>Monthly price (₹)<small>SME tools: ₹1,500–5,000</small></label><input type="number" id="s_mrr" value="2499"></div>
+      <div class="field"><label>Monthly COGS per customer (₹)<small>WA API + LLM + hosting: ₹300–500</small></label><input type="number" id="s_cogs" value="400"></div>
+      <div class="field"><label>Monthly churn (%)<small>SMB SaaS: 3–7%</small></label><input type="number" id="s_churn" value="5"></div>
+    </div>
+    <div class="card">
+      <h2>Results</h2>
+      <div class="row"><span>Conversations</span><span class="v" id="s_convs"></span></div>
+      <div class="row"><span>Qualified leads</span><span class="v" id="s_quals"></span></div>
+      <div class="row"><span>Paid pilots</span><span class="v" id="s_pilots"></span></div>
+      <div class="row"><span>Pilot + OTO revenue</span><span class="v" id="s_pilot_rev"></span></div>
+      <div class="row"><span>New paying customers</span><span class="v" id="s_cust"></span></div>
+      <div class="row"><span>New MRR added</span><span class="v" id="s_new_mrr"></span></div>
+      <div class="row"><span>CAC (gross)</span><span class="v" id="s_cac"></span></div>
+      <div class="row"><span>CAC (net of pilot/OTO fees)</span><span class="v" id="s_cac_net"></span></div>
+      <div class="row"><span>Payback (months)</span><span class="v" id="s_payback"></span></div>
+      <div class="row"><span>Lifetime (1 / churn)</span><span class="v" id="s_life"></span></div>
+      <div class="row"><span>LTV (gross margin × lifetime)</span><span class="v" id="s_ltv"></span></div>
+      <div class="big" id="s_ratio"></div>
+      <div class="note" id="s_note"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const num = id => parseFloat($(id).value) || 0;
+  const inr = n => '₹' + Math.round(n).toLocaleString('en-IN');
+  const cnt = n => Math.round(n).toLocaleString('en-IN');
+
+  function calcWorkshop() {
+    const spend = num('w_spend'), cpl = num('w_cpl');
+    const regs = cpl > 0 ? spend / cpl : 0;
+    const entryRev = regs * num('w_entry');
+    const otoRev = regs * num('w_oto_rate') / 100 * num('w_oto_price');
+    const att = regs * num('w_show') / 100;
+    const buyers = att * num('w_close') / 100;
+    const htRev = buyers * num('w_ticket') * (1 - num('w_refund') / 100);
+    const gross = entryRev + otoRev + htRev;
+    const sell = htRev * num('w_costs') / 100;
+    const profit = gross - sell - spend;
+    const roas = spend > 0 ? gross / spend : 0;
+    const sens = att * 0.01 * num('w_ticket') * (1 - num('w_refund') / 100);
+
+    $('w_regs').textContent = cnt(regs);
+    $('w_entry_rev').textContent = inr(entryRev);
+    $('w_oto_rev').textContent = inr(otoRev);
+    $('w_att').textContent = cnt(att);
+    $('w_buyers').textContent = cnt(buyers);
+    $('w_ht_rev').textContent = inr(htRev);
+    $('w_gross').textContent = inr(gross);
+    $('w_sell').textContent = '−' + inr(sell);
+    $('w_roas').textContent = roas.toFixed(2) + '×';
+    const p = $('w_profit');
+    p.textContent = (profit >= 0 ? 'Profit ' : 'Loss ') + inr(Math.abs(profit));
+    p.className = 'big ' + (profit >= 0 ? 'good' : 'bad');
+    $('w_note').textContent = roas < 2
+      ? 'Below ~2× ROAS this model does not survive team + delivery costs. Cheaper registrations or a higher close rate are the only two levers that matter.'
+      : 'Above ~2× ROAS. Note the entry fee is ' + (gross > 0 ? (entryRev / gross * 100).toFixed(1) : 0) + '% of revenue — it is a qualifier, not a product.';
+    $('w_sens').textContent = inr(sens);
+  }
+
+  function calcSaas() {
+    const spend = num('s_spend'), cpc = num('s_cpc');
+    const convs = cpc > 0 ? spend / cpc : 0;
+    const quals = convs * num('s_qual') / 100;
+    const pilots = quals * num('s_pilot') / 100;
+    const pilotRev = pilots * num('s_pilot_price') + pilots * num('s_oto_rate') / 100 * num('s_oto_price');
+    const cust = pilots * num('s_pay') / 100;
+    const mrr = num('s_mrr'), cogs = num('s_cogs'), churn = num('s_churn') / 100;
+    const newMrr = cust * mrr;
+    const cac = cust > 0 ? spend / cust : 0;
+    const cacNet = cust > 0 ? Math.max(0, spend - pilotRev) / cust : 0;
+    const margin = mrr - cogs;
+    const payback = margin > 0 ? cacNet / margin : Infinity;
+    const life = churn > 0 ? 1 / churn : Infinity;
+    const ltv = margin * life;
+    const ratio = cacNet > 0 ? ltv / cacNet : Infinity;
+
+    $('s_convs').textContent = cnt(convs);
+    $('s_quals').textContent = cnt(quals);
+    $('s_pilots').textContent = cnt(pilots);
+    $('s_pilot_rev').textContent = inr(pilotRev);
+    $('s_cust').textContent = cust.toFixed(1);
+    $('s_new_mrr').textContent = inr(newMrr) + '/mo';
+    $('s_cac').textContent = inr(cac);
+    $('s_cac_net').textContent = inr(cacNet);
+    $('s_payback').textContent = isFinite(payback) ? payback.toFixed(1) : '∞';
+    $('s_life').textContent = isFinite(life) ? life.toFixed(0) + ' mo' : '∞';
+    $('s_ltv').textContent = isFinite(ltv) ? inr(ltv) : '∞';
+    const r = $('s_ratio');
+    r.textContent = 'LTV : CAC = ' + (isFinite(ratio) ? ratio.toFixed(1) : '∞') + ' : 1';
+    r.className = 'big ' + (ratio >= 3 ? 'good' : 'bad');
+    $('s_note').textContent = ratio >= 3
+      ? 'Healthy (≥3:1). Payback under ' + (isFinite(payback) ? Math.ceil(payback) : '∞') + ' month(s) means you can reinvest revenue into ads without outside capital.'
+      : 'Below 3:1. Either the demo is not converting (fix the bot / the vertical), churn is too high (fix onboarding), or the price is too low for the value.';
+  }
+
+  function recalc() { calcWorkshop(); calcSaas(); }
+  document.querySelectorAll('input').forEach(i => i.addEventListener('input', recalc));
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    $('workshop').classList.toggle('hidden', t.dataset.mode !== 'workshop');
+    $('saas').classList.toggle('hidden', t.dataset.mode !== 'saas');
+  }));
+  recalc();
+</script>
+</body>
+</html>
