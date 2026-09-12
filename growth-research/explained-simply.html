@@ -1,0 +1,352 @@
+<title>The ₹9 Trick, Explained Simply</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+  :root {
+    --bg: #EEF6F1;
+    --paper: #FFFFFF;
+    --ink: #0B2E24;
+    --muted: #5E6F68;
+    --line: #CFE0D6;
+    --leaf: #1FA463;
+    --leaf-soft: #D6F0E2;
+    --money: #C77F14;
+    --money-soft: #FBEBD0;
+    --stop: #C9463F;
+    --stop-soft: #F9DEDC;
+    --wa: #128C7E;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0D1A15;
+      --paper: #142520;
+      --ink: #E9F3EE;
+      --muted: #9FB4AA;
+      --line: #274037;
+      --leaf: #3BC77F;
+      --leaf-soft: #17392A;
+      --money: #F0B14A;
+      --money-soft: #3A2C12;
+      --stop: #F0706A;
+      --stop-soft: #46201E;
+      --wa: #25B39F;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0D1A15;
+    --paper: #142520;
+    --ink: #E9F3EE;
+    --muted: #9FB4AA;
+    --line: #274037;
+    --leaf: #3BC77F;
+    --leaf-soft: #17392A;
+    --money: #F0B14A;
+    --money-soft: #3A2C12;
+    --stop: #F0706A;
+    --stop-soft: #46201E;
+    --wa: #25B39F;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Atkinson Hyperlegible", "Segoe UI", Roboto, system-ui, sans-serif;
+    font-size: 17px; line-height: 1.55;
+    padding-block: 32px 80px; padding-inline: 16px;
+  }
+  .page { max-width: 720px; margin: 0 auto; display: grid; gap: 56px; }
+  h1, h2, h3 { font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif; text-wrap: balance; margin: 0; line-height: 1.1; }
+  h1 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; letter-spacing: -0.01em; }
+  h3 { font-size: 1.15rem; font-weight: 700; }
+  p { margin: 0; max-width: 62ch; }
+  section { display: grid; gap: 18px; }
+  .eyebrow { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--leaf); font-weight: 700; }
+  .lead { font-size: 1.2rem; }
+  dfn { font-style: normal; font-weight: 700; }
+  .m { color: var(--muted); font-weight: 400; }
+  .num { font-variant-numeric: tabular-nums; }
+  .paper { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+
+  /* hero */
+  .hero { gap: 14px; }
+  .hero .tag { display: inline-flex; align-items: center; gap: 8px; background: var(--leaf-soft); color: var(--ink); border-radius: 999px; padding: 6px 14px; font-size: 0.9rem; width: fit-content; }
+  .hero .tag b { color: var(--leaf); }
+  .price { display: flex; align-items: baseline; gap: 14px; font-family: "Bricolage Grotesque", sans-serif; }
+  .price .old { font-size: 1.6rem; color: var(--muted); text-decoration: line-through; }
+  .price .new { font-size: 3rem; font-weight: 800; color: var(--money); }
+
+  /* funnel */
+  .funnel { display: grid; gap: 6px; }
+  .stage { display: grid; grid-template-columns: 1fr; gap: 4px; }
+  .bar { height: 34px; border-radius: 6px; background: var(--leaf); display: flex; align-items: center; padding-inline: 12px; color: #fff; font-weight: 700; font-family: "Bricolage Grotesque", sans-serif; white-space: nowrap; min-width: max-content; }
+  .bar.money { background: var(--money); }
+  .drop { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--muted); padding-inline: 4px; }
+  .drop b { color: var(--ink); }
+  .funnel-foot { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  @media (max-width: 520px) { .funnel-foot { grid-template-columns: 1fr; } }
+  .stat { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 4px; }
+  .stat .big { font-family: "Bricolage Grotesque", sans-serif; font-size: 1.8rem; font-weight: 800; }
+  .stat .big.money { color: var(--money); }
+  .stat .big.stop { color: var(--stop); }
+  .stat .small { color: var(--muted); font-size: 0.9rem; }
+
+  /* reasons */
+  .reasons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  @media (max-width: 560px) { .reasons { grid-template-columns: 1fr; } }
+  .reason { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 8px; align-content: start; }
+  .reason .k { width: 34px; height: 34px; border-radius: 8px; background: var(--leaf-soft); color: var(--leaf); display: grid; place-items: center; font-weight: 800; font-family: "Bricolage Grotesque", sans-serif; }
+  .reason p { font-size: 0.97rem; }
+
+  /* tricks */
+  .tricks { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--paper); }
+  .trick { display: grid; grid-template-columns: minmax(120px, 190px) 1fr; gap: 14px; padding: 14px 16px; border-top: 1px solid var(--line); align-items: start; }
+  .trick:first-child { border-top: none; }
+  @media (max-width: 520px) { .trick { grid-template-columns: 1fr; gap: 6px; } }
+  .trick .what { font-weight: 700; font-family: "Bricolage Grotesque", sans-serif; }
+  .trick .what small { display: block; color: var(--stop); font-family: "Atkinson Hyperlegible", sans-serif; font-weight: 400; font-size: 0.8rem; }
+  .trick p { font-size: 0.97rem; }
+
+  /* money bars */
+  .moneybars { display: grid; gap: 10px; }
+  .mrow { display: grid; grid-template-columns: 150px 1fr; gap: 12px; align-items: center; }
+  @media (max-width: 520px) { .mrow { grid-template-columns: 1fr; gap: 4px; } }
+  .mrow .lbl { font-size: 0.95rem; }
+  .mrow .track { height: 28px; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; position: relative; }
+  .mrow .fill { position: absolute; inset: 0 auto 0 0; border-radius: 5px; }
+  .mrow .fill.spend { background: var(--stop); }
+  .mrow .fill.rev { background: var(--money); }
+  .mrow .fill.keep { background: var(--leaf); }
+  .mrow .val { position: absolute; right: 10px; top: 0; bottom: 0; display: flex; align-items: center; font-weight: 700; font-family: "Bricolage Grotesque", sans-serif; }
+
+  /* don't */
+  .dont { border-left: 4px solid var(--stop); background: var(--stop-soft); border-radius: 0 12px 12px 0; padding: 16px 18px; display: grid; gap: 10px; }
+  .dont ul, .plain ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+
+  /* your skills */
+  .skills { width: 100%; border-collapse: collapse; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font-size: 0.95rem; }
+  .skills th, .skills td { text-align: left; padding: 12px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+  .skills th { background: var(--leaf-soft); border-top: none; font-family: "Bricolage Grotesque", sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .skills td.money { color: var(--money); font-weight: 700; white-space: nowrap; }
+  .tablewrap { overflow-x: auto; }
+  .star { background: var(--money-soft); }
+
+  /* steps */
+  .steps { display: grid; gap: 0; }
+  .step { display: grid; grid-template-columns: 44px 1fr; gap: 14px; padding-block: 16px; border-top: 1px solid var(--line); }
+  .step:first-child { border-top: none; }
+  .step .n { width: 40px; height: 40px; border-radius: 50%; background: var(--leaf); color: #fff; display: grid; place-items: center; font-weight: 800; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.1rem; }
+  .step .body { display: grid; gap: 6px; }
+  .step .body p { font-size: 0.97rem; }
+  .step .cost { color: var(--money); font-weight: 700; font-size: 0.9rem; }
+
+  /* glossary */
+  .gloss { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 20px; }
+  @media (max-width: 560px) { .gloss { grid-template-columns: 1fr; } }
+  .gloss div { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+  .gloss dfn { color: var(--ink); }
+
+  .foot { color: var(--muted); font-size: 0.85rem; }
+  a { color: var(--wa); }
+</style>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="tag">Seen in your WhatsApp Status · Be10x “AI Workshop” ad</span>
+    <h1>The ₹9 trick, explained simply</h1>
+    <div class="price"><span class="old">₹999</span><span class="new">₹9</span></div>
+    <p class="lead">The ₹9 is bait. Nobody makes money from ₹9. The real sale happens <b>three days later</b>, when they ask for <b>₹40,000</b>.</p>
+    <p>Below: how it works, why it works, why you should not copy it, and what you should do with the bots you already build. No marketing knowledge needed.</p>
+  </section>
+
+  <!-- FUNNEL -->
+  <section>
+    <span class="eyebrow">Picture 1</span>
+    <h2>Out of every 3,000 people who see the ad, about 1 pays ₹40,000</h2>
+    <p>At every step, most people leave. Marketing people call this a <dfn>funnel</dfn> <span class="m">(wide at the top, narrow at the bottom, like a kitchen funnel)</span>. Here is Be10x's funnel for one month, using realistic numbers.</p>
+
+    <div class="funnel num">
+      <div class="stage">
+        <div class="bar" style="width:100%">4,00,000 people see the ad</div>
+        <div class="drop"><span>about 2–3% tap it</span><b>tap = ₹5–₹25 each</b></div>
+      </div>
+      <div class="stage">
+        <div class="bar" style="width:78%">40,000 open the page</div>
+        <div class="drop"><span>1 in 4 pays ₹9</span><b>each ₹9 payer cost them ≈ ₹250 in ads</b></div>
+      </div>
+      <div class="stage">
+        <div class="bar" style="width:58%">10,000 pay ₹9</div>
+        <div class="drop"><span>less than half actually attend</span><b>3 days of WhatsApp reminders</b></div>
+      </div>
+      <div class="stage">
+        <div class="bar" style="width:40%">4,500 attend the “live” 3-hour workshop</div>
+        <div class="drop"><span>90 min teaching, then 90 min selling</span><b>3 out of 100 buy</b></div>
+      </div>
+      <div class="stage">
+        <div class="bar money" style="width:22%">135 pay ≈ ₹40,000</div>
+      </div>
+    </div>
+
+    <div class="funnel-foot num">
+      <div class="stat"><span class="big stop">₹25 lakh</span><span class="small">spent on ads that month</span></div>
+      <div class="stat"><span class="big money">₹54 lakh</span><span class="small">collected from 135 people × ₹40,000</span></div>
+      <div class="stat"><span class="big">₹90,000</span><span class="small">collected from all the ₹9 payments — almost nothing</span></div>
+      <div class="stat"><span class="big">≈ ₹18 lakh</span><span class="small">what they gain if 4 out of 100 buy instead of 3. That is why the selling is so hard.</span></div>
+    </div>
+  </section>
+
+  <!-- WHY ₹9 -->
+  <section>
+    <span class="eyebrow">Picture 2</span>
+    <h2>Why ₹9, and not free?</h2>
+    <p>If the ₹9 makes no money, why not make the workshop free? Because the ₹9 does four jobs that “free” cannot do.</p>
+    <div class="reasons">
+      <div class="reason">
+        <span class="k">1</span>
+        <h3>It proves the person can pay</h3>
+        <p>Someone who completes a UPI payment has money, a working phone, and the habit of paying online. A free sign-up proves nothing. The ₹9 filters out people who will never pay ₹40,000.</p>
+      </div>
+      <div class="reason">
+        <span class="k">2</span>
+        <h3>It gets a verified phone number</h3>
+        <p>UPI payment = real mobile number. Now they can message that person on WhatsApp for 3 days with reminders and stories. WhatsApp messages get read by 8 in 10 people; emails by 2 in 10.</p>
+      </div>
+      <div class="reason">
+        <span class="k">3</span>
+        <h3>It teaches Facebook who buys</h3>
+        <p>When you run ads, you tell Facebook “show this to people likely to <b>buy</b>”. Facebook can only learn that if you tell it who bought. Every ₹9 payment is one lesson. Thousands of cheap lessons a week means Facebook gets very good at finding buyers. <b>This is the single biggest reason.</b></p>
+      </div>
+      <div class="reason">
+        <span class="k">4</span>
+        <h3>People show up for what they paid for</h3>
+        <p>Paid workshops: about half attend. Free ones: about a quarter. And once someone has said “yes” with money once, saying yes again feels natural. Small yes → big yes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRICKS -->
+  <section>
+    <span class="eyebrow">Picture 3</span>
+    <h2>The tricks on the page, and what each one does to your brain</h2>
+    <div class="tricks">
+      <div class="trick"><div class="what">₹̶9̶9̶9̶ → ₹9<small>anchoring</small></div><p>Show a big price first so the real price feels tiny. Later they do it again: ₹̶7̶9̶,̶9̶9̶9̶ → ₹39,999. Same trick, bigger numbers.</p></div>
+      <div class="trick"><div class="what">“Only 137 seats left”<small>fake scarcity</small></div><p>The number is made up — it's a recording that thousands watch at once. Fear of missing out makes you act now instead of thinking.</p></div>
+      <div class="trick"><div class="what">Countdown timer<small>urgency</small></div><p>Refresh the page and it resets. Its only job is to stop you from saying “let me think about it”.</p></div>
+      <div class="trick"><div class="what">“5,00,000+ learners · ★4.9”<small>social proof</small></div><p>If so many people did it, it must be fine. The Amazon/Google logos are usually where <em>attendees</em> work, not partners.</p></div>
+      <div class="trick"><div class="what">“IIT founders · in the news”<small>authority</small></div><p>Most of the “news” is paid press releases republished by newspapers. Looks like journalism, works like an ad.</p></div>
+      <div class="trick"><div class="what">“Laid off? AI took your job?”<small>fear</small></div><p>The ad you saw was literally labelled <em>“Laid off Employees”</em> and aimed at <em>“Healthcare Operations, age 30–65”</em> in its own link. Scared people click more than curious people.</p></div>
+      <div class="trick"><div class="what">“Made for healthcare professionals”<small>personalisation</small></div><p>Same workshop, different first sentence for nurses, bankers, teachers, HR. Feels made for you → cheaper for them.</p></div>
+      <div class="trick"><div class="what">“Offer ends when this call ends”<small>deadline + EMI</small></div><p>After 90 minutes of genuinely useful teaching you feel you owe them. Then: ₹40,000, only right now, in easy EMIs. A phone sales team calls everyone who didn't buy for the next week.</p></div>
+    </div>
+  </section>
+
+  <!-- MONEY -->
+  <section>
+    <span class="eyebrow">Picture 4</span>
+    <h2>Where the money goes</h2>
+    <div class="moneybars num">
+      <div class="mrow"><span class="lbl">Spent on ads</span><div class="track"><div class="fill spend" style="width:44%"></div><span class="val">₹25 L</span></div></div>
+      <div class="mrow"><span class="lbl">Collected from 135 buyers</span><div class="track"><div class="fill rev" style="width:95%"></div><span class="val">₹54 L</span></div></div>
+      <div class="mrow"><span class="lbl">Minus refunds, salespeople's commission, EMI fees</span><div class="track"><div class="fill spend" style="width:27%"></div><span class="val">− ₹15 L</span></div></div>
+      <div class="mrow"><span class="lbl">Left over</span><div class="track"><div class="fill keep" style="width:25%"></div><span class="val">≈ ₹14 L</span></div></div>
+    </div>
+    <p>A good business — but a thin one. If only <b>2 in 100</b> attendees buy instead of 3, the ₹54 lakh becomes ₹36 lakh and they <b>lose money</b> that month. The whole business hangs on the last 90 minutes of the workshop. That is why the selling feels so pushy: it has to be.</p>
+  </section>
+
+  <!-- DON'T -->
+  <section>
+    <span class="eyebrow">The honest part</span>
+    <h2>Why you should not copy this</h2>
+    <div class="dont">
+      <p><b>It is not a software business. It is a selling business.</b> What makes Be10x work is not the workshop — it is:</p>
+      <ul>
+        <li>a team making dozens of new video ads every week,</li>
+        <li>a phone sales team paid on commission,</li>
+        <li>a brand willing to live with 1-star reviews and government notices <span class="m">(India's ad regulator fines “fake urgency” and “guaranteed job” claims; education is the most-complained-about ad category every year)</span>,</li>
+        <li>and 3 years of data teaching Facebook who buys, plus a ₹10-crore-a-year ad budget you would be bidding against.</li>
+      </ul>
+      <p>Also: it is getting harder. Getting one ₹9 sign-up cost ₹100 in 2020 and costs ₹250–₹1,000 now, because everyone copied it and people have learned what “₹9 workshop” means.</p>
+    </div>
+  </section>
+
+  <!-- YOUR SKILLS -->
+  <section>
+    <span class="eyebrow">Your turn</span>
+    <h2>What you already build, and who would pay for it</h2>
+    <p>You don't need to sell courses. You build things businesses need every day. Here is who has the problem badly, and what they'd pay each month.</p>
+    <div class="tablewrap">
+    <table class="skills num">
+      <tr><th>You have built</th><th>Who suffers without it</th><th>What it does for them</th><th>They'd pay</th></tr>
+      <tr><td>WhatsApp group bot</td><td>Coaching centres, clinics, apartment societies, small online sellers</td><td>Answers the same 20 questions automatically, collects fees or orders, sends reminders</td><td class="money">₹1,500–4,000 / month</td></tr>
+      <tr class="star"><td><b>Odoo bot</b></td><td>Every small company already running Odoo <span class="m">(they have already proven they pay for software)</span></td><td>“Ask your business anything on WhatsApp”: stock left, invoice paid or not, approve a purchase, daily sales as a voice note</td><td class="money">₹3,000–10,000 / month or ₹50k–2L once</td></tr>
+      <tr><td>AI voice agent</td><td>Clinics, coaching centres, car showrooms — anyone whose phone rings more than they can answer</td><td>Picks up every call in Hindi/Tamil/Telugu, books the appointment, sends the reminder</td><td class="money">₹3,000–8,000 / month</td></tr>
+      <tr><td>AI workflows</td><td>CA firms, property agents, small agencies</td><td>Sorts incoming leads, collects documents, follows up automatically</td><td class="money">₹15k–50k setup + monthly</td></tr>
+    </table>
+    </div>
+    <p><b>The Odoo one is special.</b> Almost nobody combines Odoo + WhatsApp + AI for Indian small businesses. And the agencies who install Odoo for those businesses <span class="m">(“Odoo partners” — there are hundreds in India)</span> would happily resell your bot to their clients. That is a way to get customers without paying Facebook at all.</p>
+  </section>
+
+  <!-- PLAN -->
+  <section>
+    <span class="eyebrow">The plan · in order</span>
+    <h2>Six steps. Each one only makes sense after the one before.</h2>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div class="body"><h3>Don't touch ads yet. Give it to 5 businesses for free.</h3><p>Pick one type of business — say dental clinics — and one of your bots. Find 5 clinics through people you know. Install it free. Every week ask: “what did this save you?” Write down the number, e.g. “recovered 11 missed appointments”. <b>That number becomes your ad later.</b> Nothing in marketing works without it.</p><span class="cost">Cost: ₹0 · Time: 2–3 weeks</span></div></div>
+      <div class="step"><span class="n">2</span><div class="body"><h3>Put a small price on it. Not free.</h3><p>₹499 to set it up on the clinic's own number for 14 days, then ₹2,499 a month if they keep it. The ₹499 is <em>your</em> version of the ₹9: it filters out time-wasters, gets you a real phone number, and teaches Facebook who buys. Honest version, same effect.</p></div></div>
+      <div class="step"><span class="n">3</span><div class="body"><h3>Make one 15-second vertical video.</h3><p>Screen-record your bot handling one real message. Text on top: <em>“Dr. Priya's clinic missed 23 appointments last month. Now WhatsApp handles it. Tap to try.”</em> The button opens a WhatsApp chat with <b>your bot</b>. The person plays with it. The bot is the demo, the demo is the sales pitch. No landing page needed.</p><span class="cost">Cost: ₹0 · Time: 1 day</span></div></div>
+      <div class="step"><span class="n">4</span><div class="body"><h3>Spend ₹1,000 a day for two weeks.</h3><p>In Facebook's ad tool, choose: goal = <b>Sales</b> <span class="m">(never “Traffic” or “Clicks” — Facebook will find you 10,000 people who click and never buy)</span>, where = <b>WhatsApp</b>, show it on WhatsApp Status and Instagram Reels, let Facebook pick the audience with a hint like “dentist” or “clinic owner”, only your city and two nearby. When someone pays ₹499, tell Facebook <span class="m">(your payment tool can do this automatically)</span> — that is the “teaching Facebook who buys” part.</p><span class="cost">Cost: ₹14,000 total</span></div></div>
+      <div class="step"><span class="n">5</span><div class="body"><h3>Look at only three numbers.</h3><p>① What did each WhatsApp chat cost you? <b>Want: under ₹80.</b> ② Of the people who chatted, how many paid ₹499? <b>Want: more than 5 in 100.</b> ③ Of the ₹499 payers, how many stayed for ₹2,499? <b>Want: more than 4 in 10.</b> Whichever number fails tells you exactly what to fix: bad ① = better video; bad ② = better bot demo; bad ③ = better first-two-weeks experience.</p></div></div>
+      <div class="step"><span class="n">6</span><div class="body"><h3>If all three numbers are good, spend more. If not, fix one thing.</h3><p>Raise the budget slowly (about 20% every few days). Add a second city. Then a second type of business — coaching centres, timed for the Feb–July admission rush. Do not build new features nobody asked for. Do not go “for any business” — a dentist buys “WhatsApp receptionist for dental clinics” in one conversation; nobody buys “AI WhatsApp automation platform”.</p><span class="cost">Target by day 90: 5+ paying clinics ≈ ₹12,500 / month, growing</span></div></div>
+    </div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section>
+    <span class="eyebrow">Words you'll keep hearing</span>
+    <h2>Vocabulary, in brackets</h2>
+    <div class="gloss">
+      <div><dfn>Ad</dfn> <span class="m">(a video or picture you pay Facebook to show people)</span></div>
+      <div><dfn>Meta / Facebook Ads Manager</dfn> <span class="m">(the website where you create ads for Facebook, Instagram and WhatsApp — all one company)</span></div>
+      <div><dfn>WhatsApp Status ad</dfn> <span class="m">(an ad that appears between your friends' Status updates)</span></div>
+      <div><dfn>Click-to-WhatsApp ad</dfn> <span class="m">(an ad whose button opens a WhatsApp chat with the business)</span></div>
+      <div><dfn>Impression</dfn> <span class="m">(one person saw the ad once)</span></div>
+      <div><dfn>CPM</dfn> <span class="m">(what 1,000 impressions cost you — ₹50 to ₹400 in India)</span></div>
+      <div><dfn>Click / tap</dfn> <span class="m">(someone touched the ad)</span></div>
+      <div><dfn>CPC</dfn> <span class="m">(what one tap costs you — ₹5 to ₹25 on WhatsApp Status)</span></div>
+      <div><dfn>Landing page</dfn> <span class="m">(the one page people arrive at after tapping — one message, one button)</span></div>
+      <div><dfn>Conversion</dfn> <span class="m">(the person did the thing you wanted: paid, registered, started a chat)</span></div>
+      <div><dfn>Lead</dfn> <span class="m">(a person who gave you their phone number)</span></div>
+      <div><dfn>CPL</dfn> <span class="m">(what one phone number cost you in ads)</span></div>
+      <div><dfn>Customer</dfn> <span class="m">(a person who actually paid for the real product)</span></div>
+      <div><dfn>CAC</dfn> <span class="m">(what one paying customer cost you in ads)</span></div>
+      <div><dfn>LTV</dfn> <span class="m">(total money one customer gives you before they leave)</span></div>
+      <div><dfn>ROAS</dfn> <span class="m">(money back ÷ money spent on ads; 2× means ₹100 of ads brought ₹200)</span></div>
+      <div><dfn>Churn</dfn> <span class="m">(how many paying customers cancel each month)</span></div>
+      <div><dfn>Funnel</dfn> <span class="m">(the whole path from “saw ad” to “paid”, narrowing at each step)</span></div>
+      <div><dfn>Low-ticket / tripwire</dfn> <span class="m">(a tiny first purchase like ₹9 or ₹499 whose job is to get a first “yes”)</span></div>
+      <div><dfn>High-ticket</dfn> <span class="m">(the expensive thing that actually makes the money — ₹35,000+)</span></div>
+      <div><dfn>Upsell</dfn> <span class="m">(selling something more expensive to someone who already bought)</span></div>
+      <div><dfn>OTO / order bump</dfn> <span class="m">(an extra offer shown right after payment, “only on this page”)</span></div>
+      <div><dfn>Nurture</dfn> <span class="m">(the messages between “signed up” and “bought” — reminders, stories, proof)</span></div>
+      <div><dfn>Show-up rate</dfn> <span class="m">(of the people who registered, how many actually came)</span></div>
+      <div><dfn>Close rate</dfn> <span class="m">(of the people who came, how many bought)</span></div>
+      <div><dfn>Creative</dfn> <span class="m">(the actual ad video or image)</span></div>
+      <div><dfn>Hook</dfn> <span class="m">(the first 2 seconds that stop the thumb)</span></div>
+      <div><dfn>Targeting</dfn> <span class="m">(telling Facebook who should see the ad — age, city, interests, job)</span></div>
+      <div><dfn>Advantage+ audience</dfn> <span class="m">(letting Facebook's computer pick who sees it instead of you)</span></div>
+      <div><dfn>Campaign objective</dfn> <span class="m">(what you ask Facebook to find you: clicks, phone numbers, or buyers — always pick buyers)</span></div>
+      <div><dfn>Pixel / Conversions API</dfn> <span class="m">(the way your website or payment tool tells Facebook “this person just paid”)</span></div>
+      <div><dfn>Anchoring</dfn> <span class="m">(showing a big price first so the real price looks small)</span></div>
+      <div><dfn>Scarcity / urgency</dfn> <span class="m">(“only 137 seats”, countdown timers — pressure to act now)</span></div>
+      <div><dfn>Social proof</dfn> <span class="m">(“5 lakh learners”, star ratings, logos — “others did it, so it's safe”)</span></div>
+      <div><dfn>Vertical</dfn> <span class="m">(one specific type of business, like dental clinics)</span></div>
+      <div><dfn>SaaS</dfn> <span class="m">(software people pay for every month, like Netflix for businesses)</span></div>
+      <div><dfn>MRR</dfn> <span class="m">(all your monthly subscriptions added up)</span></div>
+      <div><dfn>Productized service</dfn> <span class="m">(a fixed job at a fixed price: “WhatsApp bot set-up, ₹25,000”)</span></div>
+      <div><dfn>BSP</dfn> <span class="m">(a company that resells WhatsApp's official business messaging — AiSensy, Wati, Gupshup)</span></div>
+      <div><dfn>ASCI / CCPA</dfn> <span class="m">(India's advertising watchdog and consumer-protection authority; they fine fake urgency and false promises)</span></div>
+    </div>
+  </section>
+
+  <p class="foot">Numbers are 2026 Indian benchmarks and reviewer reports collected in <code>sources.md</code> in this folder; treat them as realistic estimates, not Be10x's actual accounts. Companion files: the detailed teardown (01), the product strategy (02), and an interactive calculator.</p>
+</div>
