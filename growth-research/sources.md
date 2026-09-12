@@ -75,3 +75,29 @@ extracts. Verify any number before putting money behind it.
 - ASCI press announcements: https://www.ascionline.in/press-announcements/
 - Advertising law in India / ASCI compliance (Altacit): https://www.altacit.com/advertising-law-in-india-asci-guidelines-misleading-ads-legal-compliance/
 - Misleading ad complaint guide 2026: https://righttoinformation.wiki/misleading-advertisement-complaint-india
+
+## WhatsApp-native mini CRM/ERP — market, competitors, platform rules
+- Best WhatsApp CRM for Indian businesses 2026 (Groweon): https://www.groweon.com/blog/best-whatsapp-crm-for-indian-businesses-in-2026-complete-guide/
+- WhatsApp CRM India picks (ITforSME): https://www.itforsme.in/best/whatsapp-crm-india/
+- Top 10 WhatsApp CRM India 2026 (Cleomitra): https://www.cleomitra.com/blog/top-10-whatsapp-crm-software-india-2026
+- WhatsApp API pricing India, 5 BSPs compared (Codingclave): https://codingclave.com/guides/whatsapp-api-pricing-india-2026-comparison
+- Khatabook monetisation struggles (The Morning Context): https://themorningcontext.com/internet/khatabook-cant-lend-enough-to-justify-its-valuation
+- Vyapar vs Khatabook vs OkCredit vs myBillBook: https://www.saasworthy.com/compare/vyapar-vs-khatabook-vs-okcredit-vs-mybillbook?pIds=2841,8396,31224,34992
+- Vyapar FY22 revenue ₹20 Cr (IndiaMART): https://corporate.indiamart.com/2022/09/14/vyapars-revenue-touches-rs-20-cr-in-fy22-losses-shoot-up-over-4x
+- Vyapar (1.5 Cr+ businesses): https://vyaparapp.in/
+- Swipe (YC) WhatsApp invoicing: https://getswipe.in/
+- Bikayi in the kirana-tech market (Inc42): https://inc42.com/startups/will-bikayis-saas-model-take-off-in-indias-kirana-digitisation-market/
+- Dukaan mobile-first (Inc42): https://inc42.com/startups/how-dukaans-mobile-first-approach-led-to-building-a-shopify-rival-for-indian-smbs/
+- WhatsApp for MSMEs India guide (wa.expert): https://wa.expert/pages/whatsapp-for-msme-india
+- WhatsApp statistics India 2026 (Hyperleap): https://hyperleap.ai/blog/whatsapp-statistics-india-2026
+- Zoho survey: software cost top MSME hurdle: https://prezohoweb.zoho.com/news/zoho-survey-reveals-that-high-cost-of-software-a-top-hurdle.html
+- MSME 2026 updates / pain points (ProfitBooks): https://profitbooks.net/msme-2026-updates/
+- Bots in WhatsApp groups not supported (BotPenguin): https://botpenguin.com/blogs/how-to-add-whatsapp-bot-to-group-chat
+- WhatsApp Groups API 2026 limits (Unipile): https://www.unipile.com/whatsapp-group-api/
+- WhatsApp Groups API business guide (imBee): https://www.imbee.io/resource/whatsapp-groups-api-business-guide-2026
+- Meta developer docs — Groups API: https://developers.facebook.com/documentation/business-messaging/whatsapp/groups
+- Meta developer docs — messaging limits: https://developers.facebook.com/docs/whatsapp/messaging-limits/
+- WhatsApp Pay for business 2026 (AiSensy): https://m.aisensy.com/blog/whatsapp-pay-for-business-guide/
+- WhatsApp invoicing for Indian MSMEs 2026 (Tally): https://tallysolutions.com/business-guides/whatsapp-invoicing-payments-india-2026/
+- WhatsApp payment gateway playbook (Razorpay): https://razorpay.com/blog/whatsapp-support-for-payment-gateways-the-complete-2026-merchant-playbook
+- WhatsApp Flows announcement: https://alternativeto.net/news/2023/9/whatsapp-introduces-flows-for-in-chat-business-services-and-meta-verification-program

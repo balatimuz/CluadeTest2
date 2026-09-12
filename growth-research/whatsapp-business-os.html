@@ -1,0 +1,311 @@
+<title>Run the Shop From WhatsApp</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+  :root {
+    --bg: #EEF6F1; --paper: #FFFFFF; --ink: #0B2E24; --muted: #5E6F68; --line: #CFE0D6;
+    --leaf: #1FA463; --leaf-soft: #D6F0E2; --money: #C77F14; --money-soft: #FBEBD0;
+    --stop: #C9463F; --stop-soft: #F9DEDC; --wa: #128C7E; --bubble-in: #FFFFFF; --bubble-out: #DCF8C6; --chatbg: #E5DDD5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0D1A15; --paper: #142520; --ink: #E9F3EE; --muted: #9FB4AA; --line: #274037;
+      --leaf: #3BC77F; --leaf-soft: #17392A; --money: #F0B14A; --money-soft: #3A2C12;
+      --stop: #F0706A; --stop-soft: #46201E; --wa: #25B39F; --bubble-in: #1F2C27; --bubble-out: #1E4D35; --chatbg: #0B141A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0D1A15; --paper: #142520; --ink: #E9F3EE; --muted: #9FB4AA; --line: #274037;
+    --leaf: #3BC77F; --leaf-soft: #17392A; --money: #F0B14A; --money-soft: #3A2C12;
+    --stop: #F0706A; --stop-soft: #46201E; --wa: #25B39F; --bubble-in: #1F2C27; --bubble-out: #1E4D35; --chatbg: #0B141A;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Atkinson Hyperlegible", "Segoe UI", Roboto, system-ui, sans-serif; font-size: 17px; line-height: 1.55; padding-block: 32px 80px; padding-inline: 16px; }
+  .page { max-width: 720px; margin: 0 auto; display: grid; gap: 56px; }
+  h1, h2, h3 { font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif; text-wrap: balance; margin: 0; line-height: 1.1; }
+  h1 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; letter-spacing: -0.01em; }
+  h3 { font-size: 1.15rem; font-weight: 700; }
+  p { margin: 0; max-width: 62ch; }
+  section { display: grid; gap: 18px; }
+  .eyebrow { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--leaf); font-weight: 700; }
+  .lead { font-size: 1.2rem; }
+  dfn { font-style: normal; font-weight: 700; }
+  .m { color: var(--muted); font-weight: 400; }
+  .num { font-variant-numeric: tabular-nums; }
+  .tag { display: inline-flex; align-items: center; gap: 8px; background: var(--leaf-soft); color: var(--ink); border-radius: 999px; padding: 6px 14px; font-size: 0.9rem; width: fit-content; }
+
+  /* chat mock */
+  .chat { background: var(--chatbg); border-radius: 18px; padding: 14px; display: grid; gap: 8px; border: 1px solid var(--line); }
+  .chat .hdr { display: flex; align-items: center; gap: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 4px; }
+  .chat .hdr .av { width: 34px; height: 34px; border-radius: 50%; background: var(--wa); color: #fff; display: grid; place-items: center; font-weight: 800; font-family: "Bricolage Grotesque", sans-serif; }
+  .chat .hdr b { font-family: "Bricolage Grotesque", sans-serif; }
+  .chat .hdr small { display: block; color: var(--muted); font-size: 0.78rem; }
+  .msg { max-width: 82%; padding: 8px 12px; border-radius: 10px; font-size: 0.95rem; line-height: 1.4; color: var(--ink); box-shadow: 0 1px 1px rgba(0,0,0,0.08); white-space: pre-line; }
+  .msg.out { background: var(--bubble-out); justify-self: end; border-bottom-right-radius: 2px; }
+  .msg.in { background: var(--bubble-in); justify-self: start; border-bottom-left-radius: 2px; }
+  .msg .who { display: block; font-size: 0.72rem; color: var(--leaf); font-weight: 700; margin-bottom: 2px; }
+  .msg .t { display: block; text-align: right; font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
+  .daybreak { justify-self: center; font-size: 0.75rem; color: var(--muted); background: var(--paper); padding: 3px 10px; border-radius: 8px; }
+
+  /* before/after */
+  .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .ba { grid-template-columns: 1fr; } }
+  .ba .col { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 8px; align-content: start; }
+  .ba .col h3 { font-size: 1rem; }
+  .ba .col.bad h3 { color: var(--stop); }
+  .ba .col.good h3 { color: var(--leaf); }
+  .ba ul { margin: 0; padding-left: 18px; font-size: 0.95rem; display: grid; gap: 4px; }
+
+  /* map */
+  .map { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .map { grid-template-columns: 1fr; } }
+  .cell { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+  .cell .lab { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 700; }
+  .cell .names { font-weight: 700; font-family: "Bricolage Grotesque", sans-serif; }
+  .cell p { font-size: 0.92rem; }
+  .cell.gap { background: var(--money-soft); border-color: var(--money); grid-column: 1 / -1; }
+  .cell.gap .names { color: var(--money); font-size: 1.2rem; }
+
+  /* features */
+  .feat { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--paper); }
+  .frow { display: grid; grid-template-columns: minmax(150px, 220px) 1fr; gap: 14px; padding: 14px 16px; border-top: 1px solid var(--line); align-items: start; }
+  .frow:first-child { border-top: none; }
+  @media (max-width: 520px) { .frow { grid-template-columns: 1fr; gap: 6px; } }
+  .frow .typed { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.88rem; background: var(--bubble-out); color: var(--ink); padding: 6px 10px; border-radius: 8px; width: fit-content; max-width: 100%; }
+  .frow p { font-size: 0.95rem; }
+  .frow .pays { color: var(--money); font-weight: 700; font-size: 0.85rem; }
+
+  /* warn */
+  .warn { border-left: 4px solid var(--stop); background: var(--stop-soft); border-radius: 0 12px 12px 0; padding: 16px 18px; display: grid; gap: 10px; }
+  .warn ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 0.97rem; }
+
+  /* table */
+  .tablewrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font-size: 0.93rem; }
+  th, td { text-align: left; padding: 11px 13px; border-top: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--leaf-soft); border-top: none; font-family: "Bricolage Grotesque", sans-serif; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  td.money { color: var(--money); font-weight: 700; white-space: nowrap; }
+  tr.star td { background: var(--money-soft); }
+
+  /* tiers */
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 640px) { .tiers { grid-template-columns: 1fr; } }
+  .tier { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 8px; align-content: start; }
+  .tier .price { font-family: "Bricolage Grotesque", sans-serif; font-size: 1.7rem; font-weight: 800; color: var(--money); }
+  .tier .price small { font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+  .tier ul { margin: 0; padding-left: 18px; font-size: 0.9rem; display: grid; gap: 4px; }
+  .tier.mid { border-color: var(--leaf); }
+
+  /* steps */
+  .steps { display: grid; }
+  .step { display: grid; grid-template-columns: 44px 1fr; gap: 14px; padding-block: 16px; border-top: 1px solid var(--line); }
+  .step:first-child { border-top: none; }
+  .step .n { width: 40px; height: 40px; border-radius: 50%; background: var(--leaf); color: #fff; display: grid; place-items: center; font-weight: 800; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.1rem; }
+  .step .body { display: grid; gap: 6px; }
+  .step .body p { font-size: 0.97rem; }
+  .step .cost { color: var(--money); font-weight: 700; font-size: 0.9rem; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
+  .stat { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 4px; }
+  .stat .big { font-family: "Bricolage Grotesque", sans-serif; font-size: 1.7rem; font-weight: 800; }
+  .stat .small { color: var(--muted); font-size: 0.88rem; }
+  .foot { color: var(--muted); font-size: 0.85rem; }
+  a { color: var(--wa); }
+</style>
+
+<div class="page">
+
+  <section>
+    <span class="tag">Product idea · uses only WhatsApp + your bot · no Odoo, no app to install</span>
+    <h1>Run the whole shop from WhatsApp</h1>
+    <p class="lead">A small business owner types to <b>one WhatsApp number</b> the way they'd text a trusted assistant — and that assistant keeps the customer list, the sales, the udhaar (credit), the stock, and the reminders. Their customers order and pay through the same number.</p>
+    <p>That is a <dfn>mini CRM</dfn> <span class="m">(who your customers are and what they owe or bought)</span> plus a <dfn>mini ERP</dfn> <span class="m">(what you sold, what's in stock, what money came in and went out)</span> — with <b>WhatsApp as the only screen</b>.</p>
+  </section>
+
+  <!-- CHAT DEMO -->
+  <section>
+    <span class="eyebrow">Picture 1 · what it feels like</span>
+    <h2>The owner never opens an app. They just talk.</h2>
+    <div class="chat">
+      <div class="hdr"><span class="av">S</span><div><b>Sharma Traders · Assistant</b><small>Business account · replies instantly</small></div></div>
+      <span class="daybreak">Today</span>
+      <div class="msg out"><span class="who">Owner</span>Ramesh 5 bag cement 1750 udhaar<span class="t">9:12</span></div>
+      <div class="msg in">✅ Saved. <b>Ramesh Kumar</b> · 5 × Cement @ ₹350 = <b>₹1,750</b> on credit.
+His total due is now <b>₹6,250</b>.
+Invoice sent to Ramesh on WhatsApp. Reminder set for Friday.
+Cement stock left: <b>38 bags</b>.<span class="t">9:12</span></div>
+      <div class="msg out"><span class="who">Owner</span>kitna udhaar baaki hai total<span class="t">13:40</span></div>
+      <div class="msg in">Total credit outstanding: <b>₹48,900</b> across 14 customers.
+Top 3: Ramesh ₹6,250 · Gupta Builders ₹12,000 (34 days) · Anil ₹5,400.
+Reply <b>REMIND ALL</b> to send polite reminders to everyone over 15 days.<span class="t">13:40</span></div>
+      <div class="msg out"><span class="who">Owner</span>REMIND ALL<span class="t">13:41</span></div>
+      <div class="msg in">Sent 9 reminders with UPI pay links. I'll tell you as payments arrive.<span class="t">13:41</span></div>
+      <div class="msg in">💰 <b>Gupta Builders paid ₹12,000</b> via UPI just now. Marked as cleared. Receipt sent.<span class="t">16:05</span></div>
+      <div class="msg out"><span class="who">Owner</span>aaj ka hisaab<span class="t">21:00</span></div>
+      <div class="msg in">📊 <b>Today, 12 Sept</b>
+Sales ₹23,400 (11 bills) · Cash ₹9,200 · UPI ₹12,450 · Credit given ₹1,750
+Collected old dues ₹12,000 · Expenses ₹1,800 (diesel, tea)
+⚠️ Low stock: TMT 12mm — 6 pcs left.<span class="t">21:00</span></div>
+    </div>
+    <p>Same number, other side: <b>Ramesh</b> receives the invoice, a Friday reminder with a UPI link, and can type “2 bag cement” to order again. He never installs anything either.</p>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <section>
+    <span class="eyebrow">Picture 2 · the problem</span>
+    <h2>Today a small shop runs on four things that don't talk to each other</h2>
+    <div class="ba">
+      <div class="col bad">
+        <h3>Now</h3>
+        <ul>
+          <li>Paper udhaar book <span class="m">(who owes what)</span></li>
+          <li>Personal WhatsApp — orders buried in 40 chats</li>
+          <li>Maybe Vyapar / Khatabook — a separate app they forget to update</li>
+          <li>Memory, for stock</li>
+          <li>Awkward phone calls to ask for money</li>
+        </ul>
+      </div>
+      <div class="col good">
+        <h3>With your bot</h3>
+        <ul>
+          <li>One WhatsApp number holds all of it</li>
+          <li>Owner types in Hinglish/Tamil/Telugu, bot understands</li>
+          <li>Invoice, reminder, receipt go out automatically</li>
+          <li>Stock updates itself on every sale</li>
+          <li>Reminder comes from “the system”, not from the owner — no awkwardness</li>
+        </ul>
+      </div>
+    </div>
+    <div class="stats num">
+      <div class="stat"><span class="big">1.5 crore</span><span class="small">Indian businesses already on WhatsApp Business</span></div>
+      <div class="stat"><span class="big">78%</span><span class="small">of small businesses run customer chats on WhatsApp</span></div>
+      <div class="stat"><span class="big">#1 pain</span><span class="small">delayed payments (udhaar), per MSME surveys — the reminder alone pays for the tool</span></div>
+    </div>
+  </section>
+
+  <!-- MARKET MAP -->
+  <section>
+    <span class="eyebrow">Picture 3 · who already exists, and the hole</span>
+    <h2>Everyone built a dashboard. Nobody built an assistant.</h2>
+    <div class="map">
+      <div class="cell">
+        <span class="lab">Customer-facing chatbots &amp; team inboxes</span>
+        <span class="names">Wati · Interakt · DoubleTick · AiSensy · Gallabox</span>
+        <p>₹999–₹5,000/month. Great for a company with 3 support agents and a marketing team. The <b>owner must log into a website</b> to see anything. Built for D2C brands, not for a trader.</p>
+      </div>
+      <div class="cell">
+        <span class="lab">Owner-facing billing &amp; ledger apps</span>
+        <span class="names">Vyapar · Khatabook · OkCredit · myBillBook · Swipe</span>
+        <p>Vyapar: 1.5 crore businesses, real revenue. Khatabook/OkCredit: free, struggling to make money. All are <b>a separate app</b> the owner has to open, tap through, and keep updated. They can <em>share</em> a bill on WhatsApp — they don't <em>live</em> in it.</p>
+      </div>
+      <div class="cell">
+        <span class="lab">“WhatsApp CRM + billing” bundles</span>
+        <span class="names">Cleomitra · Groweon · Kraya</span>
+        <p>~₹999/month. Closest to the idea, but still dashboard-first with WhatsApp bolted on. Aimed at salons and clinics with appointments.</p>
+      </div>
+      <div class="cell">
+        <span class="lab">Store builders</span>
+        <span class="names">Dukaan · Bikayi</span>
+        <p>Online shop in 30 seconds. Solves “sell online”, not “run my daily hisaab”. Funding dried up; Bikayi faded.</p>
+      </div>
+      <div class="cell gap">
+        <span class="lab">The empty square</span>
+        <span class="names">Owner talks to WhatsApp → business runs itself</span>
+        <p>No dashboard. No second app. Natural language in Indian languages. Customer side and owner side on one number. Priced for a shop, not a brand. <b>This is where your WhatsApp + AI skills land, and nobody big is standing there.</b> Vyapar could add it one day — which is exactly why you move first and stay narrow.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section>
+    <span class="eyebrow">Picture 4 · what to build first</span>
+    <h2>Seven things the owner can type. That's the whole first version.</h2>
+    <p>Every line below is one <dfn>intent</dfn> <span class="m">(a thing the bot recognises and acts on)</span>. Build these seven, in this order. Nothing else until 10 shops pay.</p>
+    <div class="feat">
+      <div class="frow"><span class="typed">Ramesh 5 bag cement 1750 udhaar</span><div><p><b>Record a sale.</b> Creates the customer if new, adds the item, marks cash/UPI/credit, reduces stock, sends the customer an invoice. <span class="m">(mini ERP: sales + inventory; mini CRM: customer record)</span></p><span class="pays">This is 80% of daily use.</span></div></div>
+      <div class="frow"><span class="typed">Ramesh ne 2000 diya</span><div><p><b>Record a payment.</b> Reduces what they owe, sends a receipt. UPI payments via the bot's pay link are recorded automatically.</p></div></div>
+      <div class="frow"><span class="typed">kitna udhaar baaki hai</span><div><p><b>Who owes what.</b> Total, top debtors, how many days overdue.</p><span class="pays">The #1 pain. Owners will pay for this alone.</span></div></div>
+      <div class="frow"><span class="typed">REMIND ALL <span class="m">/ remind Ramesh</span></span><div><p><b>Polite reminders with a UPI link</b>, sent from the business number — not from the owner's personal chat. Repeat weekly automatically until cleared.</p></div></div>
+      <div class="frow"><span class="typed">stock cement</span><div><p><b>Stock check &amp; low-stock alerts.</b> “5 bags left” — with an automatic warning when anything drops below a level the owner sets once.</p></div></div>
+      <div class="frow"><span class="typed">aaj ka hisaab <span class="m">/ is mahine ka</span></span><div><p><b>Daily and monthly summary</b> — sales, cash vs UPI vs credit, collected, expenses, low stock. Sent automatically every night at 9 pm.</p><span class="pays">The habit hook: they'll wait for this message.</span></div></div>
+      <div class="frow"><span class="typed">kharcha diesel 800</span><div><p><b>Record an expense.</b> So the daily summary shows real profit, not just sales.</p></div></div>
+    </div>
+    <p><b>Customer side</b> on the same number, no extra work for you: receive invoice · tap UPI link to pay <span class="m">(WhatsApp Pay / Razorpay / PhonePe all work inside the chat)</span> · type “2 bag cement” to reorder · “order status”. Later: a WhatsApp catalogue so customers browse and order without typing.</p>
+    <p><b>Second version</b> (only after paying customers ask): GST invoice PDF · staff can also record sales · monthly PDF for the accountant · multiple branches · Tally/Excel export.</p>
+  </section>
+
+  <!-- GROUP WARNING -->
+  <section>
+    <span class="eyebrow">Important · about your group bot</span>
+    <h2>Be careful with “groups”</h2>
+    <div class="warn">
+      <p><b>A bot that sits inside a normal WhatsApp group and replies is not officially allowed.</b> The tools that make it possible <span class="m">(the unofficial libraries that pretend to be a phone)</span> are the fastest way to get a business number banned. Fine for a hobby project; not something you can charge money for and promise it works next month.</p>
+      <p>What <em>is</em> official in 2026:</p>
+      <ul>
+        <li><b>Official Groups API</b> — a verified business number can now create groups of <b>up to 8 people</b>, up to 10,000 groups per number. No buttons/lists inside groups, no calls. Good for: <b>owner + 2–4 staff + the bot</b> as the shop's back-office group. Not for customers.</li>
+        <li><b>Broadcasts and 1-to-1 chats</b> for customers — feels personal, no 256-member limit, fully allowed, and it's where invoices and pay links belong anyway.</li>
+        <li><b>WhatsApp Flows</b> <span class="m">(forms inside the chat)</span> and <b>Catalogue</b> for ordering without typing.</li>
+      </ul>
+      <p>So: keep the group idea for the <b>owner + staff</b> team room (“Ramesh 5 bag cement” typed by any staff member gets recorded), and serve customers one-to-one. Build only on the official <dfn>WhatsApp Business API</dfn> <span class="m">(Meta's paid, allowed way for software to send and receive WhatsApp messages)</span>. That also means it can't break when WhatsApp updates.</p>
+    </div>
+  </section>
+
+  <!-- WHO FIRST -->
+  <section>
+    <span class="eyebrow">Picture 5 · who to sell it to first</span>
+    <h2>Start with businesses that give credit</h2>
+    <p>Because the payment reminder is the feature people will pay for on day one, start where udhaar is a daily headache.</p>
+    <div class="tablewrap">
+    <table class="num">
+      <tr><th>Business type</th><th>Their daily pain</th><th>Why the bot wins</th><th>Would pay</th></tr>
+      <tr class="star"><td><b>Small B2B traders &amp; distributors</b><br><span class="m">building material, FMCG, agri inputs, electrical</span></td><td>Lakhs stuck in udhaar; orders by phone/WhatsApp all day; no time for an app</td><td>Reminders from “the system” recover money without souring relationships; sale recorded in one line</td><td class="money">₹1,500–4,000 / mo</td></tr>
+      <tr><td><b>Coaching &amp; tuition centres</b></td><td>Fee collection, batch timing questions, parent updates</td><td>Fee reminders + receipts + “class cancelled today” broadcasts</td><td class="money">₹1,000–2,500 / mo</td></tr>
+      <tr><td><b>Home businesses &amp; small D2C</b><br><span class="m">bakers, boutiques, tiffin</span></td><td>Orders lost in chats; who paid, who didn't</td><td>Order → invoice → UPI → status, all in one thread</td><td class="money">₹500–1,500 / mo</td></tr>
+      <tr><td><b>Service &amp; repair</b><br><span class="m">AC, plumbing, electricians</span></td><td>Job bookings, quotes, follow-up</td><td>Booking + quote + reminder + review request</td><td class="money">₹1,000–2,500 / mo</td></tr>
+    </table>
+    </div>
+    <p><b>Pick traders/distributors first.</b> Higher money at stake → higher price → ads pay back faster. One recovered ₹12,000 udhaar pays for a year of the tool. Coaching centres second, timed for the Feb–July admission season.</p>
+  </section>
+
+  <!-- PRICING -->
+  <section>
+    <span class="eyebrow">Picture 6 · pricing and what it costs you</span>
+    <h2>Three prices. Most people pick the middle one.</h2>
+    <div class="tiers num">
+      <div class="tier"><h3>Solo</h3><span class="price">₹999<small> / month</small></span><ul><li>1 owner number</li><li>Sales, udhaar, stock, expenses</li><li>Reminders + UPI links</li><li>Nightly summary</li><li>Up to 300 customers</li></ul></div>
+      <div class="tier mid"><h3>Shop</h3><span class="price">₹2,499<small> / month</small></span><ul><li>Everything in Solo</li><li>Owner + 4 staff (team group)</li><li>GST invoice PDFs</li><li>Customer catalogue &amp; reorder</li><li>Monthly PDF for the CA</li><li>Unlimited customers</li></ul></div>
+      <div class="tier"><h3>Multi-shop</h3><span class="price">₹4,999<small> / month</small></span><ul><li>Everything in Shop</li><li>Up to 3 branches</li><li>Branch-wise summary</li><li>Excel / Tally export</li><li>Priority WhatsApp support</li></ul></div>
+    </div>
+    <p><b>What one “Shop” customer costs you each month:</b> WhatsApp messages ≈ ₹100–250 <span class="m">(Meta charges about ₹0.12 per reminder/receipt and ₹0.86 per promotional message, plus 18% GST; from 1 Oct 2026 even replies inside a live chat are charged, so price per message, not per chat)</span> + AI ≈ ₹100–200 + hosting ≈ ₹50. Roughly <b>₹400 cost against ₹2,499 price</b>. Healthy.</p>
+    <p><b>Setup fee: ₹499</b>, paid before you switch it on. That is your “₹9” — filters time-wasters, gives you a verified number, and tells Facebook “this kind of person buys” so your ads get cheaper.</p>
+  </section>
+
+  <!-- PLAN -->
+  <section>
+    <span class="eyebrow">The plan · in order</span>
+    <h2>Ninety days, six steps</h2>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div class="body"><h3>Rebuild your bot on the official API, with the 7 intents.</h3><p>Register a WhatsApp Business API number directly with Meta <span class="m">(free to register; you pay per message)</span> or via a reseller with no markup. Hinglish + one regional language. Store: customers, items, sales, payments, expenses. Nothing more.</p><span class="cost">Weeks 1–3 · Cost: ₹0–2,000</span></div></div>
+      <div class="step"><span class="n">2</span><div class="body"><h3>Give it free to 5 traders you can reach in person.</h3><p>Hardware shop, cement dealer, wholesale grocer — whoever your family or friends know. Sit with them for 20 minutes to enter their top 30 customers. Then ask every week: “kitna udhaar recover hua?” Write it down. Fix whatever they trip on.</p><span class="cost">Weeks 3–6 · Cost: ₹0</span></div></div>
+      <div class="step"><span class="n">3</span><div class="body"><h3>Turn one real result into a 15-second video.</h3><p>Screen-record the chat above with the trader's real (permitted) numbers. Text on top: <em>“Sharma Traders recovered ₹48,000 of old udhaar in 3 weeks — from WhatsApp, no app.”</em> Button opens a chat with <b>your demo bot</b>, which says: “Type your first sale, e.g. <em>Ramesh 5 bag cement 1750 udhaar</em>.” The demo <em>is</em> the sales pitch.</p><span class="cost">Week 7 · Cost: ₹0</span></div></div>
+      <div class="step"><span class="n">4</span><div class="body"><h3>₹1,000 a day for two weeks.</h3><p>Facebook ad tool: goal = <b>Sales → WhatsApp</b> <span class="m">(never “Traffic”)</span>. Show on WhatsApp Status, Instagram Reels, Facebook feed. Let Facebook choose the audience with hints like “wholesale”, “distributor”, “building materials”, “Vyapar”, in your city + 2 nearby. When someone pays the ₹499 setup, your payment tool tells Facebook automatically.</p><span class="cost">Weeks 7–9 · Cost: ₹14,000</span></div></div>
+      <div class="step"><span class="n">5</span><div class="body"><h3>Watch three numbers.</h3><p>① Cost per WhatsApp chat started — <b>want under ₹80</b>. ② Chats → ₹499 setup — <b>want over 5 in 100</b>. ③ Setups → still paying in month 2 — <b>want over 6 in 10</b>. A bad ① means a better video; a bad ② means a better demo bot; a bad ③ means onboarding is too much work — do the first 30 customers <em>for</em> them.</p></div></div>
+      <div class="step"><span class="n">6</span><div class="body"><h3>Scale what works; add a second type of business only after 20 paying shops.</h3><p>Raise the budget ~20% every few days while the numbers hold. Add coaching centres in January for the admission season. Talk to local CAs and hardware-market associations — one CA recommending you to 40 clients beats a month of ads.</p><span class="cost">Target by day 90: 10–20 paying shops ≈ ₹25,000–50,000 / month</span></div></div>
+    </div>
+  </section>
+
+  <!-- RISKS -->
+  <section>
+    <span class="eyebrow">Honest risks</span>
+    <h2>Four things that could go wrong</h2>
+    <div class="feat">
+      <div class="frow"><span class="typed" style="background:var(--stop-soft)">Habit</span><p><b>The owner stops typing after a week.</b> Biggest risk. Fix: the bot must be <em>less</em> effort than the paper book — one line per sale, no menus, forgives typos, and the 9 pm summary rewards them every day.</p></div>
+      <div class="frow"><span class="typed" style="background:var(--stop-soft)">Meta</span><p><b>Message prices change.</b> They just did (Oct 2026). Fix: price per message internally; keep marketing broadcasts as a paid add-on, not unlimited.</p></div>
+      <div class="frow"><span class="typed" style="background:var(--stop-soft)">Vyapar</span><p><b>A big player adds “talk to your app on WhatsApp”.</b> Fix: stay narrow (traders, then coaching), be in a language they don't bother with, and own the relationship via local CAs and market associations. Small and loved beats big and generic in a niche.</p></div>
+      <div class="frow"><span class="typed" style="background:var(--stop-soft)">Trust</span><p><b>Money data on a startup's server.</b> Fix: monthly Excel/PDF export from day one (“your data is always yours”), and a clear privacy line in the first message.</p></div>
+    </div>
+  </section>
+
+  <p class="foot">Companion pages in this folder: <em>The ₹9 Trick, Explained Simply</em> (why the ads you saw work and what to borrow), the detailed teardown (01), the broader product options (02), the calculator, and <code>sources.md</code>. Competitor prices and WhatsApp API rates are 2026 public figures; verify before quoting.</p>
+</div>
